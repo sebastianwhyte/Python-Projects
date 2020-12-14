@@ -1,0 +1,145 @@
+import turtle
+import os
+
+# Makes a window with a title, background color, and sets size
+window = turtle.Screen()
+window.title( "Pong with Python -Sebastianwhyte" )
+window.bgcolor( "black" )
+window.setup( width = 800, height = 600 )
+window.tracer( 0 )  # Stops window from updating automatically
+
+
+# Paddle A:
+playerPaddle = turtle.Turtle()
+playerPaddle.speed( 0 )
+playerPaddle.shape( "square" )
+playerPaddle.color( "white" )
+playerPaddle.shapesize( stretch_wid = 5, stretch_len = 1 )
+playerPaddle.penup()
+playerPaddle.goto( -350, 0 )
+
+# Paddle B :
+otherPaddle = turtle.Turtle()
+otherPaddle.speed( 0 )
+otherPaddle.shape( "square" )
+otherPaddle.color( "white" )
+otherPaddle.shapesize( stretch_wid = 5, stretch_len = 1 )
+otherPaddle.penup()
+otherPaddle.goto( 350, 0 )
+
+# Ball:
+ball = turtle.Turtle()
+ball.speed( 0 )
+ball.shape( "square" )
+ball.color( "white" )
+ball.penup()  # Moves pen without leaving tracks. pendown() leaves tracks when turtle moves
+ball.goto( 0, 0 )
+ball.dx = 1  # Speed of ball
+ball.dy = -1  # Speed of ball
+
+# Title & Score
+title = turtle.Turtle()
+title.speed( 0 )
+title.color( "white" )
+title.penup()
+title.hideturtle()
+title.goto( 0, 260 )
+title.write( "Pong", align = "center", font = ("Courier new", 40, "normal") )
+
+score = turtle.Turtle()
+score.speed( 0 )
+score.color( "white" )
+score.penup()
+score.hideturtle()
+score.goto( 0, 240 )
+score.write( "Player 1: 0, Player 2: 0", align = "center", font = ("Courier new", 20, "normal") )
+
+# Score Function
+playerScore = 0
+otherPlayerScore = 0
+
+
+# Function
+def playerPaddle_up():
+    y = playerPaddle.ycor()
+    y += 20
+    playerPaddle.sety( y )
+
+
+def playerPaddle_down():
+    y = playerPaddle.ycor()
+    y -= 20
+    playerPaddle.sety( y )
+
+
+def otherPaddle_up():
+    y = otherPaddle.ycor()
+    y += 20
+    otherPaddle.sety( y )
+
+
+def otherPaddle_down():
+    y = otherPaddle.ycor()
+    y -= 20
+    otherPaddle.sety( y )
+
+
+# Keyboard inputs
+window.listen()
+window.onkeypress( playerPaddle_up, "Up" )
+window.onkeypress( playerPaddle_down, "Down" )
+window.onkeypress( otherPaddle_up, "w" )
+window.onkeypress( otherPaddle_down, "s" )
+
+# Game loop
+while True:
+    window.update()
+
+    # Moves the ball
+    ball.setx( ball.xcor() + ball.dx )
+    ball.sety( ball.ycor() + ball.dy )
+
+    # Boundary
+    if ball.ycor() > 290:
+        ball.sety( 290 )
+        ball.dy *= -1
+        os.system( "afplay smw_coin.wav&" )
+
+    if ball.ycor() < -290:
+        ball.sety( -290 )
+        ball.dy *= -1
+        os.system( "afplay smw_coin.wav&" )
+
+    # Right side of screen
+    if ball.xcor() > 390:
+        ball.goto( 0, 0 )
+        ball.dx *= -1
+        playerScore += 1
+        score.clear()
+        score.write( "Player 1: {}, Player 2: {}".format( playerScore, otherPlayerScore ), align = "center",
+                     font = ("Courier new", 20, "normal") )
+
+    # Left side of screen
+    if ball.xcor() < -390:
+        ball.goto( 0, 0 )
+        ball.dx *= -1
+        otherPlayerScore += 1
+        score.clear()
+        score.write( "Player 1: {}, CPU: {}".format( playerScore, otherPlayerScore ), align = "center",
+                     font = ("Courier new", 20, "normal") )
+
+    # Paddle / Ball collision
+
+    # Ball will bounce off player b's paddle if these conditions are met
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (
+            ball.ycor() < otherPaddle.ycor() + 40 and ball.ycor() > otherPaddle.ycor() - 40):
+        ball.setx( 340 )
+        ball.dx *= -1
+        os.system( "afplay smw_coin.wav&" )
+
+    # Ball will bounce off player a's paddle if these conditions are met
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (
+            ball.ycor() < playerPaddle.ycor() + 40 and ball.ycor() > playerPaddle.ycor() - 40):
+        ball.setx( -340 )
+        ball.dx *= -1
+        os.system( "afplay smw_coin.wav&" )
