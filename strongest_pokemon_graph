@@ -1,0 +1,39 @@
+# Simple horizontal bar graph displaying the 10 strongest Pokemon of all time
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+df = pd.read_csv('pokemon_data.csv', index_col = 0)
+
+# Graphing code below
+
+title_font = { 'family': 'serif',
+         'color': 'darkred',
+         'weight': 'bold',
+         'size': 16,
+}
+
+name_labels = { 'family': 'arial',
+                'color': 'black',
+                'weight': 'normal',
+                'size': 8,
+}
+
+
+fig, ax = plt.subplots(figsize = (15, 7))
+new_df = df.loc[df['Attack'] >= 165].sort_values('Attack', ascending = True)    # Makes a new dataframe that only includes the filtered data of Pokemon with ATK > 150, then sorts from highest to lowest
+
+colors = ["black", "dodgerblue", "mediumturquoise", "slateblue", "lightblue", "firebrick", "forestgreen", "lightsalmon", "steelblue", "thistle"]
+
+ax.barh(new_df['Name'], new_df['Attack'], color = colors)
+
+plt.title('Top 10 Strongest Pokemon of All Time', fontdict = title_font)
+plt.xlabel('Attack Stats', fontdict = title_font)
+plt.ylabel('Pokemon', fontdict = title_font)
+
+ax.set_yticklabels(new_df['Name'], fontdict = name_labels)
+
+
+plt.show()
