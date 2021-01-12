@@ -13,6 +13,7 @@ used_letters = [ ]
 
 wrongAttempts = 0
 
+print("Let\'s play hangman!")
 
 # Game function
 def game():
