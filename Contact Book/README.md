@@ -26,7 +26,7 @@ However, if the name is not in the file, the program will tell the user there is
 ## Text Option
 
 If the user would like to text, the program asks who they'd like to text with. After reading what the user typed in, the program will read the text file and
-check if the desired name is inside. If the name is in the file, the program will ask user to type a message. If the user types a message, they will get an automated text back. 
+check if the desired name is inside. If the name is in the file, the program will ask user to type a message. If the user types a message, they will get an automated text back from the recipient. 
 
 But if the user presses Enter without typing anything, the program will tell user that they can't send an empty text message and ask for them to type a message. 
 
